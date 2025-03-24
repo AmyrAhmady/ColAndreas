@@ -98,7 +98,7 @@ namespace rw {
 						CollisionModels[i].SphereCount = itemCount;
 						CollisionModels[i].SphereData = new structSphereData[CollisionModels[i].SphereCount];
 
-						for (int j = 0; j < itemCount; ++j)
+						for (uint32_t j = 0; j < itemCount; ++j)
 						{
 							rw.read((char*) &(CollisionModels[i].SphereData[j].Radius), sizeof(float));
 							rw.read((char*) &(CollisionModels[i].SphereData[j].Offset), sizeof(Vector));
@@ -119,7 +119,7 @@ namespace rw {
 						CollisionModels[i].BoxData = new structBoxData[CollisionModels[i].BoxCount];
 						ColBox *boxTemp = new ColBox[CollisionModels[i].BoxCount];
 
-						for (int j = 0; j < itemCount; ++j)
+						for (uint32_t j = 0; j < itemCount; ++j)
 						{
 							rw.read((char*)&boxTemp[j], sizeof(ColBox));
 
@@ -159,7 +159,7 @@ namespace rw {
 							CollisionModels[i].FacesData = new structFacesData[CollisionModels[i].FaceCount];
 
 
-							for (int j = 0; j < itemCount; ++j)
+							for (uint32_t j = 0; j < itemCount; ++j)
 							{
 								uint32_t indexes[3];
 								rw.read((char*)&indexes, sizeof(indexes));
