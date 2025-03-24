@@ -7,10 +7,6 @@ set(CA_VERSION "v1.5.0")
 set(CA_DATABASE_VERSION 2)
 add_definitions(-DCA_VERSION="${CA_VERSION}" -DCA_DATABASE_VERSION=${CA_DATABASE_VERSION})
 
-if(NOT CMAKE_BUILD_TYPE)
-	set(CMAKE_BUILD_TYPE "Release" CACHE STRING " " FORCE)
-endif(NOT CMAKE_BUILD_TYPE)
-
 option(BuildWizard "Compile the Wizard application." OFF)
 
 if(WIN32)
@@ -32,9 +28,9 @@ set(BUILD_UNIT_TESTS OFF CACHE BOOL "BUILD_UNIT_TESTS" FORCE)
 add_subdirectory(deps/bullet3)
 
 if(WIN32)
-	#  Taken from bullet engine cmake, they do it this way so we must follow it to avoid conflicts with RunTimeLibrary issues
+	# Taken from bullet engine cmake, they do it this way so we must follow it to avoid conflicts with RunTimeLibrary issues
 	if(NOT USE_MSVC_RUNTIME_LIBRARY_DLL)
-		#We statically link to reduce dependancies
+		# We statically link to reduce dependancies
 		foreach(flag_var CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE CMAKE_C_FLAGS_MINSIZEREL CMAKE_C_FLAGS_RELWITHDEBINFO )
 			if(${flag_var} MATCHES "/MD")
 				string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
@@ -45,6 +41,20 @@ if(WIN32)
 		endforeach(flag_var)
 	endif(NOT USE_MSVC_RUNTIME_LIBRARY_DLL)
 endif()
+
+# Recast Navigation defs
+set(RECASTNAVIGATION_DEMO OFF CACHE BOOL "RECASTNAVIGATION_DEMO" FORCE)
+set(RECASTNAVIGATION_TESTS OFF CACHE BOOL "RECASTNAVIGATION_TESTS" FORCE)
+set(RECASTNAVIGATION_EXAMPLES OFF CACHE BOOL "RECASTNAVIGATION_EXAMPLES" FORCE)
+
+add_subdirectory(deps/recastnavigation)
+
+set(LIBRARY_OUTPUT_PATH "" CACHE PATH " " FORCE)
+set(CMAKE_DEBUG_POSTFIX "" CACHE PATH " " FORCE)
+set(CMAKE_RELWITHDEBINFO_POSTFIX "" CACHE PATH " " FORCE)
+set(CMAKE_MINSIZEREL_POSTFIX "" CACHE PATH " " FORCE)
+
+
 
 include_directories(
 	"${CMAKE_CURRENT_SOURCE_DIR}/src"
@@ -67,7 +77,7 @@ endif()
 add_library(ColAndreas SHARED ${CA_Source} ${DEF_FILE})
 set_target_properties(ColAndreas PROPERTIES PREFIX "")
 
-target_link_libraries(ColAndreas BulletCollision BulletDynamics BulletSoftBody LinearMath)
+target_link_libraries(ColAndreas BulletCollision BulletDynamics BulletSoftBody LinearMath Detour DetourCrowd DetourTileCache Recast)
 
 if(BuildWizard)
 	add_subdirectory(WizardApp)

@@ -1,3 +1,6 @@
 [submodule "deps/bullet3"]
 	path = deps/bullet3
 	url = https://github.com/bulletphysics/bullet3
+[submodule "deps/recastnavigation"]
+	path = deps/recastnavigation
+	url = https://github.com/recastnavigation/recastnavigation
